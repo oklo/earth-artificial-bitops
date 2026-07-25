@@ -10,6 +10,39 @@ This repository estimates artificial computation on Earth over time, expresses t
 - Central declining-growth energy crossing: current global primary-energy scale around `2090`, current Earth-intercepted solar power around `2170`, and solar luminosity around `2473`.
 - Constant 50%/yr bitops-demand sensitivity: current global primary-energy scale around `2065`, current Earth-intercepted solar power around `2089`, and solar luminosity around `2142`.
 
+| Quantity | Inclusive / central value | Notes |
+| --- | ---: | --- |
+| Current artificial computation | `1.04 x 10^26` bitops/s | Includes SHA-256 proof-of-work |
+| Current non-PoW diagnostic | `1.35 x 10^24` bitops/s | Excludes proof-of-work |
+| Current wall-power Landauer efficiency | `1.63 x 10^-6` | Inclusive estimate at 300 K |
+| Current non-PoW Landauer efficiency | `2.56 x 10^-8` | Diagnostic estimate at 300 K |
+| Central global-energy crossing | `2090` | Current global primary-energy scale |
+| Central Earth-insolation crossing | `2170` | Current Earth-intercepted solar power |
+| Central solar-luminosity crossing | `2473` | Civilization-scale reference marker |
+| Constant 50%/yr global-energy crossing | `2065` | Sensitivity, not forecast |
+| Constant 50%/yr Earth-insolation crossing | `2089` | Sensitivity, not forecast |
+| Constant 50%/yr solar-luminosity crossing | `2142` | Sensitivity, not forecast |
+
+## Talk Table
+
+| Year | Inclusive artificial bitops/s | Status | Contributor note |
+| ---: | ---: | --- | --- |
+| 1940 | `3.90 x 10^6` | reconstructed / estimated | relay/electromechanical and special-purpose machines |
+| 1950 | `3.00 x 10^8` | reconstructed / estimated | early stored-program electronic computers |
+| 1960 | `3.00 x 10^10` | reconstructed / estimated | mainframes and military/scientific systems |
+| 1970 | `3.00 x 10^12` | reconstructed / estimated | mainframes, minicomputers, early embedded control |
+| 1980 | `3.00 x 10^14` | reconstructed / estimated | microprocessors, minicomputers, early PCs |
+| 1990 | `3.00 x 10^16` | reconstructed / estimated | PCs, workstations, mainframes, embedded systems |
+| 1995 | `5.00 x 10^17` | reconstructed / estimated | internet-era PCs and servers |
+| 2000 | `1.10 x 10^19` | reconstructed / estimated | PC/web era plus data centres |
+| 2005 | `3.00 x 10^20` | reconstructed / estimated | cloud, GPUs, mobile ramp |
+| 2010 | `2.50 x 10^21` | reconstructed / estimated | smartphones, cloud, early PoW |
+| 2015 | `7.30 x 10^22` | reconstructed / estimated | cloud plus SHA-256 PoW |
+| 2020 | `1.30 x 10^25` | reconstructed / estimated | SHA-256 PoW with cloud/accelerator growth |
+| 2025 | `7.90 x 10^25` | reconstructed / estimated | estimated current/reconstructed row; SHA-256 PoW plus accelerator-scale compute |
+| 2030 | `1.90 x 10^27` | forward extrapolation | qualitative: likely SHA-256 PoW plus AI/accelerator-scale compute |
+| 2035 | `4.50 x 10^28` | forward extrapolation | qualitative forward extrapolation of aggregate bitops |
+
 ## Reproduce
 
 ```bash
