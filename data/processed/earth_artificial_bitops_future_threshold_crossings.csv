@@ -1,0 +1,7 @@
+scenario,threshold,threshold_w,crossing_year
+central_declining_growth,current_global_primary_energy,20597257079118.816,2090
+central_declining_growth,earth_intercepted_solar_power,1.74e+17,2170
+central_declining_growth,solar_luminosity,3.828e+26,2473
+constant_50pct_bitops_growth,current_global_primary_energy,20597257079118.816,2065
+constant_50pct_bitops_growth,earth_intercepted_solar_power,1.74e+17,2089
+constant_50pct_bitops_growth,solar_luminosity,3.828e+26,2142

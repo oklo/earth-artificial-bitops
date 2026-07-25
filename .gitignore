@@ -1,0 +1,22 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+build/
+dist/
+*.egg-info/
+
+# Local scratch/export products
+tmp/
+scratch/
+*.key
+*.pptx
+*.pdf
+
+# Keep generated publication artifacts tracked, but avoid accidental caches.
+data/raw/
+cache/

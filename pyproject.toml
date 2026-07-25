@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "earth-artificial-bitops"
+version = "0.1.0"
+description = "Artificial bit-operation and Landauer-efficiency analysis for Earth computation."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "matplotlib",
+  "numpy",
+  "pandas",
+  "pillow",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

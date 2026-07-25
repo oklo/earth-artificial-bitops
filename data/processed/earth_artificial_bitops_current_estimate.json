@@ -1,0 +1,127 @@
+{
+  "definition": "functional one-bit primitive operations per second",
+  "samples": 300000,
+  "seed": 20260603,
+  "categories": [
+    {
+      "category": "Bitcoin and other SHA-256 proof-of-work",
+      "include_in_no_pow": false,
+      "p05": 2.5330743218287536e+25,
+      "p10": 3.4295553149470615e+25,
+      "p50": 1.009324682886353e+26,
+      "p90": 2.9644072886814818e+26,
+      "p95": 4.010690906535958e+26,
+      "mean": 1.4363688212892986e+26,
+      "share_of_median_sum_including_pow": 0.9896368429706962,
+      "share_of_median_sum_excluding_pow": null,
+      "notes": "hash_rate_hps is centered on ~0.98 ZH/s. bitops_per_hash is a low-level double-SHA-256 trial conversion; it is intentionally broad because ASIC-level gate sharing and the exact 'bit operation' definition matter."
+    },
+    {
+      "category": "AI accelerators in data centres",
+      "include_in_no_pow": true,
+      "p05": 8.021204553340565e+22,
+      "p10": 1.401840747880216e+23,
+      "p50": 1.0093341667123028e+24,
+      "p90": 7.294078196733268e+24,
+      "p95": 1.2730623672090672e+25,
+      "mean": 3.3217395347022714e+24,
+      "share_of_median_sum_including_pow": 0.009896461418055818,
+      "share_of_median_sum_excluding_pow": 0.9549658844376964,
+      "notes": "Power is site/system-scale for accelerator installations, not just chip TDP. ops_per_joule_at_peak is tensor-op throughput efficiency; utilization discounts peak specs to average realized operation rate."
+    },
+    {
+      "category": "Conventional data-centre CPUs/GPUs/storage/networking",
+      "include_in_no_pow": true,
+      "p05": 1.2505863152769017e+21,
+      "p10": 2.3983264053742194e+21,
+      "p50": 2.389627891242534e+22,
+      "p90": 2.3736035465072957e+23,
+      "p95": 4.546163123067485e+23,
+      "mean": 1.1843282372049349e+23,
+      "share_of_median_sum_including_pow": 0.00023430159216964876,
+      "share_of_median_sum_excluding_pow": 0.022609094073081856,
+      "notes": "A residual non-AI data-centre category. It converts facility power to IT power via PUE, applies a logic-compute fraction, then converts logic joules to one-bit primitive operations."
+    },
+    {
+      "category": "Telecom and data-transmission networks",
+      "include_in_no_pow": true,
+      "p05": 6.56219768956397e+20,
+      "p10": 1.2697620095441287e+21,
+      "p50": 1.3313288610366989e+22,
+      "p90": 1.4048121487679903e+23,
+      "p95": 2.719604432318141e+23,
+      "mean": 7.16237067565752e+22,
+      "share_of_median_sum_including_pow": 0.0001305360022727673,
+      "share_of_median_sum_excluding_pow": 0.012596161758781818,
+      "notes": "Network power is dominated by access and transmission infrastructure. Only the logic-processing fraction is counted as computation."
+    },
+    {
+      "category": "Personal computers, workstations, consoles",
+      "include_in_no_pow": true,
+      "p05": 2.6352414070001844e+20,
+      "p10": 5.36803012598218e+20,
+      "p50": 6.374474706168117e+21,
+      "p90": 7.660949826273799e+22,
+      "p95": 1.5480555880143868e+23,
+      "mean": 4.174341246788293e+22,
+      "share_of_median_sum_including_pow": 6.250134501584442e-05,
+      "share_of_median_sum_excluding_pow": 0.006031110484875416,
+      "notes": "A broad installed-base category. Average logic power is averaged over wall-clock time, not just powered-on time."
+    },
+    {
+      "category": "Phones, tablets, wearables",
+      "include_in_no_pow": true,
+      "p05": 1.0047153781090338e+20,
+      "p10": 2.051673446076601e+20,
+      "p50": 2.5214397166170223e+21,
+      "p90": 3.1021205812296876e+22,
+      "p95": 6.335041110321202e+22,
+      "mean": 1.7547077260491092e+22,
+      "share_of_median_sum_including_pow": 2.472256631788684e-05,
+      "share_of_median_sum_excluding_pow": 0.0023856211237539985,
+      "notes": "Device count includes smartphones plus tablets/wearables. Average logic power is low because most devices are idle most of the day."
+    },
+    {
+      "category": "Embedded/IoT/automotive/industrial controllers",
+      "include_in_no_pow": true,
+      "p05": 2.694702136618938e+18,
+      "p10": 9.917634537235618e+18,
+      "p50": 9.94139947087131e+20,
+      "p90": 9.967398271595262e+22,
+      "p95": 3.7077937581484946e+23,
+      "mean": 5.813969388961372e+23,
+      "share_of_median_sum_including_pow": 9.747482999156382e-06,
+      "share_of_median_sum_excluding_pow": 0.0009405901089401166,
+      "notes": "A direct aggregate placeholder for MCUs, vehicles, appliances, industrial PLCs, sensors, payment terminals, building controls, etc. This is the least satisfying bucket and should be split in the next revision."
+    },
+    {
+      "category": "Consumer media electronics and cameras",
+      "include_in_no_pow": true,
+      "p05": 2.520759682408398e+19,
+      "p10": 4.905468082161443e+19,
+      "p50": 4.9838369626564565e+20,
+      "p90": 5.047359246832842e+21,
+      "p95": 9.761676118450363e+21,
+      "mean": 2.546867458314153e+21,
+      "share_of_median_sum_including_pow": 4.886622472661108e-06,
+      "share_of_median_sum_excluding_pow": 0.0004715380128703309,
+      "notes": "TVs, streaming boxes, set-top boxes, image pipelines, security cameras, and similar fixed-function media hardware."
+    }
+  ],
+  "total_including_pow": {
+    "p05": 2.7981938463085447e+25,
+    "p10": 3.7271390801844912e+25,
+    "p50": 1.0491684976294335e+26,
+    "p90": 3.0101506696489925e+26,
+    "p95": 4.0620565525623516e+26,
+    "mean": 1.4779191249019201e+26
+  },
+  "total_excluding_pow": {
+    "p05": 2.0138793189163508e+23,
+    "p10": 2.9865135514082572e+23,
+    "p50": 1.3707129677637805e+24,
+    "p90": 8.174127449274375e+24,
+    "p95": 1.4024873855580506e+25,
+    "mean": 4.155030361262165e+24
+  }
+}
