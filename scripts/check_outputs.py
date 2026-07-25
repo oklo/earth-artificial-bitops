@@ -41,9 +41,16 @@ def main() -> None:
         math.isclose(row[bitop_cols].sum(), row["total_bitops_including_pow"], rel_tol=1e-9)
         for _, row in plot.iterrows()
     )
-    assert table.loc[table["year"] == 2025, "status"].iloc[0] != "forward extrapolation"
-    assert table.loc[table["year"] == 2030, "status"].iloc[0] == "forward extrapolation"
-    assert table.loc[table["year"] == 2035, "status"].iloc[0] == "forward extrapolation"
+    assert "Extrapolated" not in table.loc[table["year"] == 2025, "primary_contributors"].iloc[0]
+    assert "Extrapolated" in table.loc[table["year"] == 2030, "primary_contributors"].iloc[0]
+    assert "Extrapolated" in table.loc[table["year"] == 2035, "primary_contributors"].iloc[0]
+    for column in (
+        "average_landauer_efficiency",
+        "bitops_per_person_per_year",
+        "energy_per_person_per_year",
+        "primary_contributors",
+    ):
+        assert column in table.columns
 
     expected_crossings = {
         ("central_declining_growth", "current_global_primary_energy"): 2090,

@@ -25,7 +25,9 @@ def append_talk_rows() -> None:
     summary = pd.read_csv(summary_path)
     template = summary[summary["year"] == 2026].iloc[0].copy()
     extras = []
-    for year, bitops, _note in ROWS:
+    for row_values in ROWS:
+        year = row_values[0]
+        bitops = row_values[1]
         if year not in {2025, 2030, 2035}:
             continue
         row = template.copy()
@@ -45,7 +47,10 @@ def append_talk_rows() -> None:
     categories_path = data_dir / "earth_artificial_bitops_historical_categories.csv"
     categories = pd.read_csv(categories_path)
     cat_extras = []
-    for year, bitops, note in ROWS:
+    for row_values in ROWS:
+        year = row_values[0]
+        bitops = row_values[1]
+        note = row_values[5]
         if year not in {2025, 2030, 2035}:
             continue
         nonpow = bitops / 60.0
