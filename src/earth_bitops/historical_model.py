@@ -43,7 +43,7 @@ wide, especially before 1980 and around the utilization conversion from
 installed capacity to actual realized operations.
 
 Run:
-    python earth_artificial_bitops_historical_model.py --samples 300000 --seed 20260603 --out-dir /mnt/data
+    python earth_artificial_bitops_historical_model.py --samples 300000 --seed 20260603 --out-dir data/processed
 """
 
 from __future__ import annotations
@@ -65,7 +65,8 @@ except Exception:  # pragma: no cover - plot is optional
 Z10 = 1.2815515655446004
 BOLTZMANN_J_PER_K = 1.380_649e-23
 LN2 = math.log(2.0)
-TARGET_YEARS = [2026, 2020, 2015, 2010, 2005, 2000, 1995, 1990, 1980, 1970, 1960, 1950, 1940]
+# New years are appended so the random stream for the original years is unchanged.
+TARGET_YEARS = [2026, 2020, 2015, 2010, 2005, 2000, 1995, 1990, 1980, 1970, 1960, 1950, 1940, 1945, 2025]
 
 
 @dataclass(frozen=True)
@@ -175,6 +176,14 @@ NON_POW_ANCHORS: dict[int, NonPoWAnchor] = {
         "pre-electronic / electromechanical extrapolation",
         "Late relay/electromechanical tabulation and special-purpose wartime machines; deliberately very broad.",
     ),
+    1945: NonPoWAnchor(
+        1945,
+        q_from_multipliers(3.5e7, 1e-2, 70.0),
+        q_from_multipliers(1.4e7, 0.18, 6.0),
+        LogQuantile(0.05, 0.20, 0.60),
+        "log-interpolated between the 1940 and 1950 anchors",
+        "Colossus/ENIAC-era one-off electronic machines on top of relay and punched-card computation; geometric mean of neighbours.",
+    ),
     1950: NonPoWAnchor(
         1950,
         q_from_multipliers(3.0e8, 0.02, 50.0),
@@ -263,6 +272,14 @@ NON_POW_ANCHORS: dict[int, NonPoWAnchor] = {
         "IEA/Masanet-style power + AI-accelerator ramp extrapolation",
         "Pre-generative-AI but GPU/TPU usage is material; data centres near low-200 TWh/year and networks rising.",
     ),
+    2025: NonPoWAnchor(
+        2025,
+        q_from_multipliers(8.5e23, 0.20, 6.0),
+        q_from_multipliers(1.39e11, 0.70, 1.60),
+        LogQuantile(0.14, 0.38, 0.88),
+        "log-interpolated between the 2020 and 2026 anchors",
+        "AI-accelerator ramp year; IEA puts data centres at ~485 TWh (AI-focused ~155 TWh) in 2025.",
+    ),
     2026: NonPoWAnchor(
         2026,
         q_from_multipliers(1.35e24, 0.20, 6.0),
@@ -278,7 +295,7 @@ NON_POW_ANCHORS: dict[int, NonPoWAnchor] = {
 # requested year, not exact point observations.
 POW_ANCHORS: dict[int, PoWAnchor] = {
     year: PoWAnchor(year, None, None, None, None, None, "No Bitcoin/SHA-256 proof-of-work bucket in this model.")
-    for year in [1940, 1950, 1960, 1970, 1980, 1990, 1995, 2000, 2005]
+    for year in [1940, 1945, 1950, 1960, 1970, 1980, 1990, 1995, 2000, 2005]
 }
 POW_ANCHORS.update(
     {
@@ -314,9 +331,18 @@ POW_ANCHORS.update(
             q_from_multipliers(9.8e20, 0.80, 1.25),
             LogQuantile(3.0e4, 1.0e5, 2.5e5),
             LogQuantile(1.00, 1.03, 1.12),
-            LogQuantile(15.0, 25.0, 45.0),
+            LogQuantile(14.0, 21.0, 34.0),
             LogQuantile(1.02, 1.08, 1.20),
-            "Current near-zettahash/s SHA-256 PoW anchor; centered on the previous current-day estimate.",
+            "Near-zettahash/s SHA-256 PoW (about 1.0 ZH/s 7-day average, Oct 2026); fleet efficiency ~20-21.5 J/TH (J.P. Morgan).",
+        ),
+        2025: PoWAnchor(
+            2025,
+            q_from_multipliers(9.3e20, 0.85, 1.15),
+            LogQuantile(3.0e4, 1.0e5, 2.5e5),
+            LogQuantile(1.00, 1.03, 1.12),
+            LogQuantile(15.0, 22.0, 36.0),
+            LogQuantile(1.02, 1.08, 1.20),
+            "2025 average hashrate ~0.8-1.09 ZH/s; fleet efficiency ~21.5-22 J/TH (J.P. Morgan Q2-Q3 2025).",
         ),
     }
 )
@@ -557,7 +583,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--samples", type=int, default=300_000)
     parser.add_argument("--seed", type=int, default=20260603)
-    parser.add_argument("--out-dir", type=Path, default=Path("/mnt/data"))
+    parser.add_argument("--out-dir", type=Path, default=Path("data/processed"))
     args = parser.parse_args()
     payload = run(args.samples, args.seed, args.out_dir)
     for row in payload["summary"]:
