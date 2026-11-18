@@ -1,107 +1,152 @@
-"""Generate the talk-facing population/time table."""
+"""Generate the talk-facing bitops and energy tables (1945 onward).
+
+Every number is derived from generated model outputs:
+  * 1945-2025 rows: Monte Carlo historical model (p50).
+  * 2030 and 2035 rows: component projection (p50).
+No row is hand-entered.
+"""
 
 from __future__ import annotations
 
-import csv
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import pandas as pd
 
+from earth_bitops.constants import (
+    CURRENT_GLOBAL_PRIMARY_ENERGY_W,
+    LANDAUER_J_PER_BIT_300K,
+    SECONDS_PER_JULIAN_YEAR,
+    WORLD_POPULATION,
+)
 from earth_bitops.formatting import sci_tex
+from earth_bitops.plotting import GROUP_ORDER
+
+TABLE_YEARS = (1945, 1950, 1960, 1970, 1980, 1990, 1995, 2000, 2005, 2010, 2015, 2020, 2025, 2030, 2035)
+ERG_PER_JOULE = 1e7
+CONTRIBUTOR_MIN_SHARE = 0.10
 
 
-ROWS = [
-    (1940, 3.98e6, 1.14e-21, 5.46e4, "0.038 kWh", "Punched-card, relay, electromechanical, analog"),
-    (1950, 3.01e8, 4.35e-20, 3.81e6, "0.070 kWh", "Early electronic + electromechanical business machines"),
-    (1960, 3.02e10, 4.32e-19, 3.16e8, "0.582 kWh", "Commercial/scientific computers"),
-    (1970, 2.98e12, 8.61e-18, 2.55e10, "2.36 kWh", "Mainframes, minis, early IC systems"),
-    (1980, 2.99e14, 2.87e-16, 2.12e12, "5.91 kWh", "Embedded / app-specific logic; mainframes/minis; PCs/consoles"),
-    (1990, 2.98e16, 8.57e-15, 1.76e14, "16.4 kWh", "Embedded / app-specific logic; PCs/workstations; servers/mainframes"),
-    (1995, 4.96e17, 9.52e-14, 2.72e15, "22.7 kWh", "Embedded / app-specific logic; PCs/consoles; servers/data centres"),
-    (2000, 1.15e19, 1.37e-12, 5.87e16, "34.1 kWh", "Embedded logic; PCs/consoles; servers/data centres; telecom/mobile"),
-    (2005, 3.00e20, 1.96e-11, 1.44e18, "58.6 kWh", "Embedded logic; PCs/consoles; telecom; servers/data centres; mobile"),
-    (2010, 2.50e21, 1.20e-10, 1.12e19, "74.8 kWh", "Embedded logic; PCs/consoles; phones/tablets; telecom/consumer media"),
-    (2015, 7.25e22, 2.96e-9, 3.06e20, "82.5 kWh", "SHA-256 PoW; embedded logic; AI/deep-learning GPUs"),
-    (2020, 1.29e25, 3.88e-7, 5.15e22, "106 kWh", "SHA-256 PoW dominates; AI accelerators; embedded logic"),
-    (2025, 7.90e25, 1.40e-6, 3.03e23, "173 kWh", "2025 estimate; SHA-256 PoW still dominant; AI accelerators rising"),
-    (2030, 1.89e27, 2.29e-5, 6.95e24, "242 kWh", "Extrapolated; likely SHA-256 PoW + AI/accelerator-scale compute"),
-    (2035, 4.51e28, 3.76e-4, 1.60e26, "340 kWh", "Extrapolated; high-throughput ASIC/accelerator compute likely dominant"),
-]
+def _contributors(plot_row: pd.Series) -> str:
+    total = float(plot_row["total_bitops_including_pow"])
+    shares = {g: float(plot_row[f"bitops_{g}"]) / total for g in GROUP_ORDER}
+    top = sorted(shares.items(), key=lambda kv: -kv[1])
+    kept = [f"{g} ({100*s:.0f}%)" for g, s in top if s >= CONTRIBUTOR_MIN_SHARE]
+    if len(kept) < 2 and len(top) > 1 and top[1][1] >= 0.005:
+        kept.append(f"{top[1][0]} ({100*top[1][1]:.1f}%)")
+    return "; ".join(kept)
+
+
+def build_rows(data_dir: Path) -> pd.DataFrame:
+    plot = pd.read_csv(data_dir / "earth_artificial_bitops_diagram_plot_data.csv").set_index("year")
+    rows = []
+    for year in TABLE_YEARS:
+        r = plot.loc[year]
+        n_incl, n_excl = float(r["total_bitops_including_pow"]), float(r["total_bitops_excluding_pow"])
+        p_incl, p_excl = float(r["power_including_pow_w"]), float(r["power_excluding_pow_w"])
+        pop = WORLD_POPULATION[year]
+        energy_j = p_incl * SECONDS_PER_JULIAN_YEAR
+        rows.append({
+            "year": year,
+            "basis": "projection (p50)" if bool(r["projected"]) else "historical model (p50)",
+            "bitops_per_s_including_pow": n_incl,
+            "bitops_per_s_excluding_pow": n_excl,
+            "bitops_per_year_including_pow": n_incl * SECONDS_PER_JULIAN_YEAR,
+            "power_w_including_pow": p_incl,
+            "power_w_excluding_pow": p_excl,
+            "energy_twh_per_year": energy_j / 3.6e15,
+            "energy_erg_per_year": energy_j * ERG_PER_JOULE,
+            "fraction_of_2025_global_primary_energy": p_incl / CURRENT_GLOBAL_PRIMARY_ENERGY_W,
+            "bitops_per_erg_including_pow": n_incl / (p_incl * ERG_PER_JOULE),
+            "bitops_per_erg_excluding_pow": n_excl / (p_excl * ERG_PER_JOULE),
+            "landauer_efficiency_including_pow": n_incl * LANDAUER_J_PER_BIT_300K / p_incl,
+            "landauer_efficiency_excluding_pow": n_excl * LANDAUER_J_PER_BIT_300K / p_excl,
+            "world_population": pop,
+            "bitops_per_person_per_year": n_incl * SECONDS_PER_JULIAN_YEAR / pop,
+            "energy_kwh_per_person_per_year": energy_j / 3.6e6 / pop,
+            "primary_contributors": _contributors(r),
+        })
+    return pd.DataFrame(rows)
+
+
+def _kwh(x: float) -> str:
+    return f"{x:.3f} kWh" if x < 1 else (f"{x:.2f} kWh" if x < 10 else (f"{x:.1f} kWh" if x < 100 else f"{x:.0f} kWh"))
+
+
+def _twh(x: float) -> str:
+    return f"{x:,.0f}" if x >= 100 else f"{x:.3g}"
+
+
+def _pct(x: float) -> str:
+    return f"{x:.2g}%" if x >= 0.01 else f"{float(f'{x:.1g}'):.5f}".rstrip("0") + "%"
+
+
+def _power(w: float) -> str:
+    return f"{w/1e6:.0f} MW" if w < 9.995e8 else f"{w/1e9:.1f} GW" if w < 1e11 else f"{w/1e9:.0f} GW"
+
+
+def markdown_tables(df: pd.DataFrame) -> tuple[str, str]:
+    t1 = [
+        "| Year | Bitops/s (all) | Bitops/s (non-PoW) | eta_L (all) | eta_L (non-PoW) | Bitops/person/yr | Energy/person/yr | Primary contributors (share of all bitops) |",
+        "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |",
+    ]
+    t2 = [
+        "| Year | Wall power | Energy/yr (TWh) | Energy/yr (erg) | Bitops/yr | Bitops/erg (all) | Bitops/erg (non-PoW) | Share of 2025 world primary energy |",
+        "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for _, r in df.iterrows():
+        mark = "*" if r["basis"].startswith("projection") else ""
+        t1.append(
+            f"| {r['year']}{mark} | `{sci_tex(r['bitops_per_s_including_pow'])}` | `{sci_tex(r['bitops_per_s_excluding_pow'])}` | "
+            f"`{sci_tex(r['landauer_efficiency_including_pow'])}` | `{sci_tex(r['landauer_efficiency_excluding_pow'])}` | "
+            f"`{sci_tex(r['bitops_per_person_per_year'])}` | {_kwh(r['energy_kwh_per_person_per_year'])} | {r['primary_contributors']} |"
+        )
+        twh = r["energy_twh_per_year"]
+        t2.append(
+            f"| {r['year']}{mark} | {_power(r['power_w_including_pow'])} | {_twh(twh)} | `{sci_tex(r['energy_erg_per_year'])}` | "
+            f"`{sci_tex(r['bitops_per_year_including_pow'])}` | `{sci_tex(r['bitops_per_erg_including_pow'])}` | "
+            f"`{sci_tex(r['bitops_per_erg_excluding_pow'])}` | {_pct(100*r['fraction_of_2025_global_primary_energy'])} |"
+        )
+    return "\n".join(t1), "\n".join(t2)
 
 
 def write_table(data_dir: Path, figures_dir: Path) -> None:
-    data_dir.mkdir(parents=True, exist_ok=True)
     figures_dir.mkdir(parents=True, exist_ok=True)
-    rows = [
-        {
-            "year": year,
-            "inclusive_bitops_per_s": bitops,
-            "display_bitops_per_s": sci_tex(bitops, digits=2),
-            "average_landauer_efficiency": eta,
-            "display_average_landauer_efficiency": sci_tex(eta, digits=2),
-            "bitops_per_person_per_year": per_capita_bitops,
-            "display_bitops_per_person_per_year": sci_tex(per_capita_bitops, digits=2),
-            "energy_per_person_per_year": energy_per_person,
-            "primary_contributors": contributors,
-        }
-        for year, bitops, eta, per_capita_bitops, energy_per_person, contributors in ROWS
-    ]
-    with (data_dir / "earth_artificial_bitops_population_table.csv").open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0].keys()))
-        writer.writeheader()
-        writer.writerows(rows)
+    df = build_rows(data_dir)
+    df.to_csv(data_dir / "earth_artificial_bitops_population_table.csv", index=False)
+    t1, t2 = markdown_tables(df)
+    note = "\n\n`*` = projection (component model, p50).  All other rows are historical-model p50 values.\n"
+    (data_dir / "earth_artificial_bitops_population_table.md").write_text(
+        "# Talk table: artificial computation on Earth, 1945 onward\n\n## Bitops\n\n" + t1
+        + "\n\n## Energy\n\n" + t2 + note, encoding="utf-8")
 
-    md_lines = [
-        "# Talk table: artificial computation on Earth",
-        "",
-        "| Year | Bitops/sec | Avg. Landauer eta_L | Bitops/person/year | Energy/person/year | Primary contributor/year |",
-        "| ---: | ---: | ---: | ---: | ---: | --- |",
-    ]
-    for row in rows:
-        md_lines.append(
-            f"| {row['year']} | {row['display_bitops_per_s']} | "
-            f"{row['display_average_landauer_efficiency']} | "
-            f"{row['display_bitops_per_person_per_year']} | "
-            f"{row['energy_per_person_per_year']} | {row['primary_contributors']} |"
-        )
-    (data_dir / "earth_artificial_bitops_population_table.md").write_text("\n".join(md_lines) + "\n", encoding="utf-8")
-
-    fig, ax = plt.subplots(figsize=(13.5, 7.6))
+    fig, ax = plt.subplots(figsize=(15.5, 7.8))
     ax.axis("off")
-    table_rows = [
-        [
-            str(row["year"]),
-            row["display_bitops_per_s"].replace(" x ", "\nx "),
-            row["display_average_landauer_efficiency"].replace(" x ", "\nx "),
-            row["display_bitops_per_person_per_year"].replace(" x ", "\nx "),
-            row["energy_per_person_per_year"],
-            row["primary_contributors"],
-        ]
-        for row in rows
-    ]
+    cells = [[
+        f"{r['year']}{'*' if r['basis'].startswith('projection') else ''}",
+        sci_tex(r["bitops_per_s_including_pow"]), sci_tex(r["bitops_per_s_excluding_pow"]),
+        _power(r["power_w_including_pow"]),
+        sci_tex(r["landauer_efficiency_including_pow"]), sci_tex(r["landauer_efficiency_excluding_pow"]),
+        sci_tex(r["bitops_per_person_per_year"]), _kwh(r["energy_kwh_per_person_per_year"]),
+        r["primary_contributors"],
+    ] for _, r in df.iterrows()]
     table = ax.table(
-        cellText=table_rows,
-        colLabels=[
-            "Year",
-            "Bitops/sec",
-            "Avg. Landauer\neta_L",
-            "Bitops /\nperson / year",
-            "Energy /\nperson / year",
-            "Primary contributors to bitops count",
-        ],
-        loc="center",
-        cellLoc="left",
-        colLoc="left",
-        colWidths=[0.07, 0.14, 0.14, 0.16, 0.13, 0.36],
+        cellText=cells,
+        colLabels=["Year", "Bitops/s\n(all)", "Bitops/s\n(non-PoW)", "Wall\npower", "eta_L\n(all)", "eta_L\n(non-PoW)",
+                   "Bitops /\nperson / yr", "Energy /\nperson / yr", "Primary contributors (share of all bitops)"],
+        loc="center", cellLoc="left", colLoc="left",
+        colWidths=[0.045, 0.085, 0.085, 0.06, 0.085, 0.085, 0.085, 0.075, 0.395],
     )
     table.auto_set_font_size(False)
-    table.set_fontsize(12)
-    table.scale(1.0, 1.75)
+    table.set_fontsize(9.5)
+    table.scale(1.0, 1.7)
     for (r, _c), cell in table.get_celld().items():
         cell.set_edgecolor("#dddddd")
         if r == 0:
             cell.set_text_props(weight="bold")
             cell.set_facecolor("#f2f2f2")
+            cell.set_height(cell.get_height() * 1.5)
+    ax.text(0.0, 0.01, "* projection (component model, p50)", transform=ax.transAxes, fontsize=9, color="0.3")
     fig.tight_layout()
     fig.savefig(figures_dir / "population_table_zoom_readable.png", dpi=220)
     fig.savefig(figures_dir / "population_table_zoom_readable.svg")

@@ -1,0 +1,69 @@
+year,group,share_of_nonpow_bitops
+1940,Early / legacy computation,1.0
+1945,Early / legacy computation,1.0
+1950,Early / legacy computation,1.0
+1960,Early / legacy computation,1.0
+1970,Data centres / servers,1.0
+1980,Data centres / servers,0.18429650644468998
+1980,Early / legacy computation,0.006900176233579592
+1980,Embedded / application-specific,0.6920061299361258
+1980,PCs / workstations / consoles,0.11449814239358788
+1980,Telecom / networks,0.002299044992016674
+1990,Consumer media electronics,0.0039140865620737675
+1990,Data centres / servers,0.13119219966620493
+1990,Embedded / application-specific,0.6564424429211129
+1990,PCs / workstations / consoles,0.1953275191004496
+1990,Phones / tablets / wearables,0.0001296408577175907
+1990,Telecom / networks,0.01299411089244097
+1995,Consumer media electronics,0.019915701977284542
+1995,Data centres / servers,0.06954480422359473
+1995,Embedded / application-specific,0.6992224948388893
+1995,PCs / workstations / consoles,0.20036994348570103
+1995,Phones / tablets / wearables,0.0009922959982035541
+1995,Telecom / networks,0.009954759476326744
+2000,Consumer media electronics,0.009918924662895071
+2000,Data centres / servers,0.04964066036347984
+2000,Embedded / application-specific,0.6943015024251493
+2000,PCs / workstations / consoles,0.19670546416987414
+2000,Phones / tablets / wearables,0.01978511918463991
+2000,Telecom / networks,0.02964832919396157
+2005,Consumer media electronics,0.020113476362209594
+2005,Data centres / servers,0.04049575977291704
+2005,Embedded / application-specific,0.7076758871658457
+2005,PCs / workstations / consoles,0.15087319051293352
+2005,Phones / tablets / wearables,0.030307349727721616
+2005,Telecom / networks,0.05053433645837245
+2010,Consumer media electronics,0.038963200335202806
+2010,Data centres / servers,0.015491442890256732
+2010,Embedded / application-specific,0.7715266976867936
+2010,PCs / workstations / consoles,0.07737205277169057
+2010,Phones / tablets / wearables,0.05780026696376891
+2010,Telecom / networks,0.038846339352287505
+2015,AI accelerators,0.29788440716090797
+2015,Consumer media electronics,0.009806986585970292
+2015,Data centres / servers,0.009873720675035075
+2015,Embedded / application-specific,0.5933762470889716
+2015,PCs / workstations / consoles,0.03950340619554373
+2015,Phones / tablets / wearables,0.039674832594276864
+2015,Telecom / networks,0.009880399699294351
+2020,AI accelerators,0.47830615092311124
+2020,Consumer media electronics,0.005318404304814374
+2020,Data centres / servers,0.026663922710169954
+2020,Embedded / application-specific,0.37216967855443217
+2020,PCs / workstations / consoles,0.02658482202939647
+2020,Phones / tablets / wearables,0.08028669772230332
+2020,Telecom / networks,0.010670323755772418
+2025,AI accelerators,0.9437630723189057
+2025,Consumer media electronics,0.0007870716808381189
+2025,Data centres / servers,0.025894742699177693
+2025,Embedded / application-specific,0.002837425499948209
+2025,PCs / workstations / consoles,0.008620442093841557
+2025,Phones / tablets / wearables,0.004735843440260501
+2025,Telecom / networks,0.013361402267028238
+2026,AI accelerators,0.9550403383473969
+2026,Consumer media electronics,0.00047444754786278494
+2026,Data centres / servers,0.022740313312025494
+2026,Embedded / application-specific,0.0009451233562752005
+2026,PCs / workstations / consoles,0.006079054368621443
+2026,Phones / tablets / wearables,0.002375064550055201
+2026,Telecom / networks,0.01234565851776303
