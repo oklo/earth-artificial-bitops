@@ -21,7 +21,9 @@
     1970,
     1960,
     1950,
-    1940
+    1940,
+    1945,
+    2025
   ],
   "non_pow_anchors": {
     "1940": {
@@ -43,6 +45,26 @@
       },
       "source_class": "pre-electronic / electromechanical extrapolation",
       "note": "Late relay/electromechanical tabulation and special-purpose wartime machines; deliberately very broad."
+    },
+    "1945": {
+      "year": 1945,
+      "bitops": {
+        "p10": 350000.0,
+        "p50": 35000000.0,
+        "p90": 2450000000.0
+      },
+      "associated_power_w": {
+        "p10": 2520000.0,
+        "p50": 14000000.0,
+        "p90": 84000000.0
+      },
+      "logic_power_fraction": {
+        "p10": 0.05,
+        "p50": 0.2,
+        "p90": 0.6
+      },
+      "source_class": "log-interpolated between the 1940 and 1950 anchors",
+      "note": "Colossus/ENIAC-era one-off electronic machines on top of relay and punched-card computation; geometric mean of neighbours."
     },
     "1950": {
       "year": 1950,
@@ -264,6 +286,26 @@
       "source_class": "IEA/Masanet-style power + AI-accelerator ramp extrapolation",
       "note": "Pre-generative-AI but GPU/TPU usage is material; data centres near low-200 TWh/year and networks rising."
     },
+    "2025": {
+      "year": 2025,
+      "bitops": {
+        "p10": 1.7e+23,
+        "p50": 8.5e+23,
+        "p90": 5.1e+24
+      },
+      "associated_power_w": {
+        "p10": 97300000000.0,
+        "p50": 139000000000.0,
+        "p90": 222400000000.0
+      },
+      "logic_power_fraction": {
+        "p10": 0.14,
+        "p50": 0.38,
+        "p90": 0.88
+      },
+      "source_class": "log-interpolated between the 2020 and 2026 anchors",
+      "note": "AI-accelerator ramp year; IEA puts data centres at ~485 TWh (AI-focused ~155 TWh) in 2025."
+    },
     "2026": {
       "year": 2026,
       "bitops": {
@@ -288,6 +330,15 @@
   "pow_anchors": {
     "1940": {
       "year": 1940,
+      "hash_rate_hps": null,
+      "bitops_per_hash": null,
+      "other_sha256_multiplier": null,
+      "fleet_efficiency_j_per_th": null,
+      "site_overhead_multiplier": null,
+      "note": "No Bitcoin/SHA-256 proof-of-work bucket in this model."
+    },
+    "1945": {
+      "year": 1945,
       "hash_rate_hps": null,
       "bitops_per_hash": null,
       "other_sha256_multiplier": null,
@@ -472,16 +523,45 @@
         "p90": 1.12
       },
       "fleet_efficiency_j_per_th": {
-        "p10": 15.0,
-        "p50": 25.0,
-        "p90": 45.0
+        "p10": 14.0,
+        "p50": 21.0,
+        "p90": 34.0
       },
       "site_overhead_multiplier": {
         "p10": 1.02,
         "p50": 1.08,
         "p90": 1.2
       },
-      "note": "Current near-zettahash/s SHA-256 PoW anchor; centered on the previous current-day estimate."
+      "note": "Near-zettahash/s SHA-256 PoW (about 1.0 ZH/s 7-day average, Oct 2026); fleet efficiency ~20-21.5 J/TH (J.P. Morgan)."
+    },
+    "2025": {
+      "year": 2025,
+      "hash_rate_hps": {
+        "p10": 7.905e+20,
+        "p50": 9.3e+20,
+        "p90": 1.0694999999999999e+21
+      },
+      "bitops_per_hash": {
+        "p10": 30000.0,
+        "p50": 100000.0,
+        "p90": 250000.0
+      },
+      "other_sha256_multiplier": {
+        "p10": 1.0,
+        "p50": 1.03,
+        "p90": 1.12
+      },
+      "fleet_efficiency_j_per_th": {
+        "p10": 15.0,
+        "p50": 22.0,
+        "p90": 36.0
+      },
+      "site_overhead_multiplier": {
+        "p10": 1.02,
+        "p50": 1.08,
+        "p90": 1.2
+      },
+      "note": "2025 average hashrate ~0.8-1.09 ZH/s; fleet efficiency ~21.5-22 J/TH (J.P. Morgan Q2-Q3 2025)."
     }
   },
   "summary": [
@@ -493,32 +573,32 @@
       "p10_bitops_excluding_pow": 2.470176332574763e+23,
       "p50_bitops_excluding_pow": 1.35229561654737e+24,
       "p90_bitops_excluding_pow": 7.358827903952937e+24,
-      "p10_associated_power_including_pow_w": 127748408075.142,
-      "p50_associated_power_including_pow_w": 182761088214.86664,
-      "p90_associated_power_including_pow_w": 262969232948.14127,
+      "p10_associated_power_including_pow_w": 123766792989.55281,
+      "p50_associated_power_including_pow_w": 177088985626.42346,
+      "p90_associated_power_including_pow_w": 255958426285.5847,
       "p10_associated_power_excluding_pow_w": 100483451908.90236,
       "p50_associated_power_excluding_pow_w": 152047705141.89618,
       "p90_associated_power_excluding_pow_w": 230068564702.23752,
-      "p10_wall_landauer_efficiency_including_pow": 5.469784903248729e-07,
-      "p50_wall_landauer_efficiency_including_pow": 1.6332937679407356e-06,
-      "p90_wall_landauer_efficiency_including_pow": 4.971655781852871e-06,
+      "p10_wall_landauer_efficiency_including_pow": 5.633229137252933e-07,
+      "p50_wall_landauer_efficiency_including_pow": 1.6844850437211175e-06,
+      "p90_wall_landauer_efficiency_including_pow": 5.131212317175414e-06,
       "p10_wall_landauer_efficiency_excluding_pow": 4.440372654309829e-09,
       "p50_wall_landauer_efficiency_excluding_pow": 2.5569315757195548e-08,
       "p90_wall_landauer_efficiency_excluding_pow": 1.4644851643342068e-07,
-      "p10_logic_landauer_efficiency_including_pow": 1.004035719656301e-06,
-      "p50_logic_landauer_efficiency_including_pow": 3.417456861614668e-06,
-      "p90_logic_landauer_efficiency_including_pow": 1.1713697749398711e-05,
+      "p10_logic_landauer_efficiency_including_pow": 1.0556564565098216e-06,
+      "p50_logic_landauer_efficiency_including_pow": 3.63924039380382e-06,
+      "p90_logic_landauer_efficiency_including_pow": 1.256524862697729e-05,
       "p10_logic_landauer_efficiency_excluding_pow": 9.954733275444674e-09,
       "p50_logic_landauer_efficiency_excluding_pow": 6.869024192016933e-08,
       "p90_logic_landauer_efficiency_excluding_pow": 4.832030675339503e-07,
-      "p50_logic_power_including_pow_w": 87080621690.8414,
+      "p50_logic_power_including_pow_w": 81289272310.94571,
       "p50_logic_power_excluding_pow_w": 57791289954.13664,
-      "p50_wall_factor_above_landauer_including_pow": 612259.7291611568,
+      "p50_wall_factor_above_landauer_including_pow": 593653.2376630347,
       "p50_wall_factor_above_landauer_excluding_pow": 39109376.62532431,
-      "p50_logic_factor_above_landauer_including_pow": 292615.2517774646,
+      "p50_logic_factor_above_landauer_including_pow": 274782.617191929,
       "p50_logic_factor_above_landauer_excluding_pow": 14558108.576210627,
       "p50_pow_share_of_bitops": 0.9866765424819637,
-      "p50_pow_share_of_power": 0.151955836868344
+      "p50_pow_share_of_power": 0.13083491577931516
     },
     {
       "year": 2020,
@@ -939,6 +1019,76 @@
       "p50_logic_factor_above_landauer_excluding_pow": 1.713105929484194e+20,
       "p50_pow_share_of_bitops": 0.0,
       "p50_pow_share_of_power": 0.0
+    },
+    {
+      "year": 1945,
+      "p10_bitops_including_pow": 417241.50570475135,
+      "p50_bitops_including_pow": 35378252.63657391,
+      "p90_bitops_including_pow": 2958318724.372584,
+      "p10_bitops_excluding_pow": 417241.50570475135,
+      "p50_bitops_excluding_pow": 35378252.63657391,
+      "p90_bitops_excluding_pow": 2958318724.372584,
+      "p10_associated_power_including_pow_w": 2415874.1811410943,
+      "p50_associated_power_including_pow_w": 13959923.977733554,
+      "p90_associated_power_including_pow_w": 80931693.29950982,
+      "p10_associated_power_excluding_pow_w": 2415874.1811410943,
+      "p50_associated_power_excluding_pow_w": 13959923.977733554,
+      "p90_associated_power_excluding_pow_w": 80931693.29950982,
+      "p10_wall_landauer_efficiency_including_pow": 6.20803765088902e-23,
+      "p50_wall_landauer_efficiency_including_pow": 7.253737574372347e-21,
+      "p90_wall_landauer_efficiency_including_pow": 8.455451525694556e-19,
+      "p10_wall_landauer_efficiency_excluding_pow": 6.20803765088902e-23,
+      "p50_wall_landauer_efficiency_excluding_pow": 7.253737574372347e-21,
+      "p90_wall_landauer_efficiency_excluding_pow": 8.455451525694556e-19,
+      "p10_logic_landauer_efficiency_including_pow": 2.7076032192227013e-22,
+      "p50_logic_landauer_efficiency_including_pow": 3.7219684389791395e-20,
+      "p90_logic_landauer_efficiency_including_pow": 4.964443728707078e-18,
+      "p10_logic_landauer_efficiency_excluding_pow": 2.7076032192227013e-22,
+      "p50_logic_landauer_efficiency_excluding_pow": 3.7219684389791395e-20,
+      "p90_logic_landauer_efficiency_excluding_pow": 4.964443728707078e-18,
+      "p50_logic_power_including_pow_w": 2762874.7371989368,
+      "p50_logic_power_excluding_pow_w": 2762874.7371989368,
+      "p50_wall_factor_above_landauer_including_pow": 1.3785996388027977e+20,
+      "p50_wall_factor_above_landauer_excluding_pow": 1.3785996388027977e+20,
+      "p50_logic_factor_above_landauer_including_pow": 2.6867503483567415e+19,
+      "p50_logic_factor_above_landauer_excluding_pow": 2.6867503483567415e+19,
+      "p50_pow_share_of_bitops": 0.0,
+      "p50_pow_share_of_power": 0.0
+    },
+    {
+      "year": 2025,
+      "p10_bitops_including_pow": 3.4770640936130683e+25,
+      "p50_bitops_including_pow": 9.799268066167412e+25,
+      "p90_bitops_including_pow": 2.8292793247688588e+26,
+      "p10_bitops_excluding_pow": 1.552161320374091e+23,
+      "p50_bitops_excluding_pow": 8.522850082511126e+23,
+      "p90_bitops_excluding_pow": 4.681143261938502e+24,
+      "p10_associated_power_including_pow_w": 114934166082.3551,
+      "p50_associated_power_including_pow_w": 163627052011.83752,
+      "p90_associated_power_including_pow_w": 235644360093.51093,
+      "p10_associated_power_excluding_pow_w": 91921292946.40967,
+      "p50_associated_power_excluding_pow_w": 139024910602.97974,
+      "p90_associated_power_excluding_pow_w": 210111322648.26782,
+      "p10_wall_landauer_efficiency_including_pow": 5.726567016298124e-07,
+      "p50_wall_landauer_efficiency_including_pow": 1.7174550472655772e-06,
+      "p90_wall_landauer_efficiency_including_pow": 5.240447226916788e-06,
+      "p10_wall_landauer_efficiency_excluding_pow": 3.0489876227949163e-09,
+      "p50_wall_landauer_efficiency_excluding_pow": 1.7656064978200608e-08,
+      "p90_wall_landauer_efficiency_excluding_pow": 1.0156627325293522e-07,
+      "p10_logic_landauer_efficiency_including_pow": 1.0699300037938651e-06,
+      "p50_logic_landauer_efficiency_including_pow": 3.6554715693082968e-06,
+      "p90_logic_landauer_efficiency_including_pow": 1.2594409996723222e-05,
+      "p10_logic_landauer_efficiency_excluding_pow": 6.853540135179323e-09,
+      "p50_logic_landauer_efficiency_excluding_pow": 4.747682453316256e-08,
+      "p90_logic_landauer_efficiency_excluding_pow": 3.3749579678518005e-07,
+      "p50_logic_power_including_pow_w": 76024395347.04309,
+      "p50_logic_power_excluding_pow_w": 52866373728.48805,
+      "p50_wall_factor_above_landauer_including_pow": 582256.8698913759,
+      "p50_wall_factor_above_landauer_excluding_pow": 56637761.654970616,
+      "p50_logic_factor_above_landauer_including_pow": 273562.51609124785,
+      "p50_logic_factor_above_landauer_excluding_pow": 21062908.268043496,
+      "p50_pow_share_of_bitops": 0.991174382767724,
+      "p50_pow_share_of_power": 0.14082788825982784
     }
   ],
   "categories": [
@@ -960,11 +1110,11 @@
       "p10_bitops": 3.4032554626067485e+25,
       "p50_bitops": 1.0062493474302196e+26,
       "p90_bitops": 2.9786761945561962e+26,
-      "p10_associated_power_w": 14931800064.50953,
-      "p50_associated_power_w": 27273970340.920387,
-      "p90_associated_power_w": 49647600963.757614,
-      "p50_wall_landauer_efficiency": 1.0623069487068446e-05,
-      "note": "Current near-zettahash/s SHA-256 PoW anchor; centered on the previous current-day estimate."
+      "p10_associated_power_w": 13797479773.091982,
+      "p50_associated_power_w": 22915112569.018703,
+      "p90_associated_power_w": 37962017408.37486,
+      "p50_wall_landauer_efficiency": 1.2640743204452573e-05,
+      "note": "Near-zettahash/s SHA-256 PoW (about 1.0 ZH/s 7-day average, Oct 2026); fleet efficiency ~20-21.5 J/TH (J.P. Morgan)."
     },
     {
       "year": 2020,
@@ -1253,6 +1403,54 @@
       "p90_associated_power_w": 0.0,
       "p50_wall_landauer_efficiency": 0.0,
       "note": "No Bitcoin/SHA-256 proof-of-work bucket in this model."
+    },
+    {
+      "year": 1945,
+      "category": "Non-PoW artificial computation",
+      "p10_bitops": 417241.50570475135,
+      "p50_bitops": 35378252.63657391,
+      "p90_bitops": 2958318724.372584,
+      "p10_associated_power_w": 2415874.1811410943,
+      "p50_associated_power_w": 13959923.977733554,
+      "p90_associated_power_w": 80931693.29950982,
+      "p50_wall_landauer_efficiency": 7.253737574372347e-21,
+      "note": "log-interpolated between the 1940 and 1950 anchors: Colossus/ENIAC-era one-off electronic machines on top of relay and punched-card computation; geometric mean of neighbours."
+    },
+    {
+      "year": 1945,
+      "category": "SHA-256 proof-of-work",
+      "p10_bitops": 0.0,
+      "p50_bitops": 0.0,
+      "p90_bitops": 0.0,
+      "p10_associated_power_w": 0.0,
+      "p50_associated_power_w": 0.0,
+      "p90_associated_power_w": 0.0,
+      "p50_wall_landauer_efficiency": 0.0,
+      "note": "No Bitcoin/SHA-256 proof-of-work bucket in this model."
+    },
+    {
+      "year": 2025,
+      "category": "Non-PoW artificial computation",
+      "p10_bitops": 1.552161320374091e+23,
+      "p50_bitops": 8.522850082511126e+23,
+      "p90_bitops": 4.681143261938502e+24,
+      "p10_associated_power_w": 91921292946.40967,
+      "p50_associated_power_w": 139024910602.97974,
+      "p90_associated_power_w": 210111322648.26782,
+      "p50_wall_landauer_efficiency": 1.7656064978200608e-08,
+      "note": "log-interpolated between the 2020 and 2026 anchors: AI-accelerator ramp year; IEA puts data centres at ~485 TWh (AI-focused ~155 TWh) in 2025."
+    },
+    {
+      "year": 2025,
+      "category": "SHA-256 proof-of-work",
+      "p10_bitops": 3.2902406702086153e+25,
+      "p50_bitops": 9.58902482532243e+25,
+      "p90_bitops": 2.8059444709789787e+26,
+      "p10_associated_power_w": 14161386493.55426,
+      "p50_associated_power_w": 22768733833.10378,
+      "p90_associated_power_w": 36540739396.469925,
+      "p50_wall_landauer_efficiency": 1.2079025627469274e-05,
+      "note": "2025 average hashrate ~0.8-1.09 ZH/s; fleet efficiency ~21.5-22 J/TH (J.P. Morgan Q2-Q3 2025)."
     }
   ],
   "outputs": {

@@ -1,0 +1,7 @@
+annual_factor,p10,p50,p90
+pow_hashrate,0.97,1.08,1.2
+pow_j_per_th,0.86,0.9,0.95
+ai_power,1.15,1.25,1.38
+ai_bitops_per_joule,1.15,1.3,1.45
+other_power,1.0,1.03,1.06
+other_bitops_per_joule,1.15,1.25,1.35

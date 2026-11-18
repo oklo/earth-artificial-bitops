@@ -1,3 +1,0 @@
-scenario,description,global_energy_crossing_year,earth_solar_crossing_year,solar_luminosity_crossing_year
-central_declining_growth,Calibrated to previous central declining-growth threshold crossings.,2090,2170,2473
-constant_50pct_bitops_growth,50%/yr bitops demand growth with efficiency improving toward the Landauer limit.,2065,2089,2142
