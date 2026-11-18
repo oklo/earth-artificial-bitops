@@ -10,7 +10,7 @@ This file records source anchors used by the model and talk.  Some numerical val
   DOI URL: https://doi.org/10.1147/rd.53.0183
 
 - IEA global energy and data-centre electricity anchors.
-  Current primary energy used here is about `650 EJ/year` in the 2024/2025 neighborhood.  Data-centre electricity anchors used in the talk include about `415 TWh` in 2024 and about `945 TWh` by 2030.
+  Current primary energy used here is about `630 EJ/year` (2025).  Data-centre electricity anchors used in the talk include about `415 TWh` in 2024 and about `945 TWh` by 2030.
   URL: https://www.iea.org/reports/energy-and-ai
 
 - NASA total solar irradiance anchor: approximately `1361.6 W/m^2`.
@@ -41,3 +41,5 @@ This file records source anchors used by the model and talk.  Some numerical val
 
 - ENIAC, Colossus, IBM 1401 early-computing anchors.
   Source noted in prior analysis; verify exact machine-performance and fleet-count assumptions before publication.
+
+- 2026-11-11 refresh (hashrate, fleet efficiency, Epoch AI compute stock, IEA 2025 data-centre electricity, METR assessment): see section 7 of `docs/review_2026-11-11.md`.

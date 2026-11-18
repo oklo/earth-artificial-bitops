@@ -13,3 +13,11 @@ eta_L = N_bitop k_B T ln(2) / P_wall
 ```
 
 where `P_wall` is an associated system/wall-power denominator unless a narrower logic-power diagnostic is explicitly labeled.
+
+## Forward models
+
+The 2026-2035 projection carries three components separately (proof-of-work, AI accelerators, other non-PoW), each with sampled annual growth in power and in bitops per joule; see `src/earth_bitops/projection_model.py`.
+
+The long-run extrapolation fits log-linear trends to the non-PoW historical series and applies `P = N kT ln2 / eta_L` with an explicit ceiling on irreversible efficiency.  Threshold-crossing years are outputs of that calculation; see `src/earth_bitops/future_model.py` and `docs/future_interpretation.md`.
+
+The category split of historical non-PoW bitops uses shares taken from the original analysis bundle (`data/reference/historical_nonpow_group_shares.csv`, built by `scripts/build_reference_shares.py`).
